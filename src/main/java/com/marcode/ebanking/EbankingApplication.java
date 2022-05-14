@@ -1,9 +1,6 @@
 package com.marcode.ebanking;
 
-import com.marcode.ebanking.entities.AccountOperation;
-import com.marcode.ebanking.entities.CurrentAccount;
-import com.marcode.ebanking.entities.Customer;
-import com.marcode.ebanking.entities.SavingAccount;
+import com.marcode.ebanking.entities.*;
 import com.marcode.ebanking.enums.AccountStatus;
 import com.marcode.ebanking.enums.OperationType;
 import com.marcode.ebanking.repositories.AccountOperationRepository;
@@ -30,7 +27,7 @@ public class EbankingApplication {
 							BankAccountRepository bankAccountRepository,
 							AccountOperationRepository accountOperationRepository){
 		return args -> {
-			Stream.of("TABOU", "MEBU", "TAMKO").forEach(name ->{
+			/*Stream.of("TABOU", "MEBU", "TAMKO").forEach(name ->{
 				Customer customer = new Customer();
 				customer.setName(name);
 				customer.setEmail(name+"@gmail.com");
@@ -58,8 +55,9 @@ public class EbankingApplication {
 				savingAccount.setInterestRate(5.7);
 				bankAccountRepository.save(savingAccount);
 			});
-
+			*/
 			bankAccountRepository.findAll().forEach(account ->{
+				//System.out.println(account.getId());
 				for(int i=0; i<10; i++) {
 					AccountOperation accountOperation = new AccountOperation();
 					accountOperation.setOperationDate(new Date());
@@ -69,7 +67,22 @@ public class EbankingApplication {
 					accountOperationRepository.save(accountOperation);
 				}
 			});
+			BankAccount bankAccount = bankAccountRepository.findById("f671a75b-8b9e-4db5-9343-9e13e3d6c8c7").orElse(null);
+			System.out.println("*************************");
+			System.out.println(bankAccount.getId());
+			System.out.println(bankAccount.getBalance());
+			System.out.println(bankAccount.getStatus());
+			System.out.println(bankAccount.getCreatedAt());
+			System.out.println(bankAccount.getCustomer().getName());
+			if(bankAccount instanceof  CurrentAccount){
+				System.out.println("Rate=>" + ((CurrentAccount)bankAccount).getOverdraft());
+			}else{
+				System.out.println(((SavingAccount)bankAccount).getInterestRate());
+			}
+			bankAccount.getAccountOperations().forEach(op -> {
+				System.out.println(op.getType()+ "\t" +op.getOperationDate() + "\t" + op.getAmount());
+			});
 		};
-	}
+	};
 
 }
