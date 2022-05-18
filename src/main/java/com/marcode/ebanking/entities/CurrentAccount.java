@@ -14,5 +14,5 @@ import javax.persistence.Entity;
 @AllArgsConstructor
 public class CurrentAccount extends  BankAccount{
 
-    private Long overdraft;
+    private double overdraft;
 }

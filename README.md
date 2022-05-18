@@ -2,4 +2,4 @@
 Implementing a mini Banking App with Spring boot, JPA MongoDB ...
 
 ## Class diagram
-![diagram](diagram.png)
+![diagram](diagram.PNG)
