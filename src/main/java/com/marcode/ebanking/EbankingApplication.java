@@ -62,7 +62,7 @@ public class EbankingApplication {
 			});
 
 			List<BankAccountDTO> bankAccountDTOs =  bankAccountService.bankAccountList();
-			System.out.println("bankAccountDTOs =============== " + bankAccountDTOs.size());
+
 			for(BankAccountDTO bankAccountTDO: bankAccountDTOs) {
 
 				for(int i=0; i< 5; i++){

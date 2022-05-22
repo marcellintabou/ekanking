@@ -1,6 +1,7 @@
 package com.marcode.ebanking.web;
 
 import com.marcode.ebanking.dtos.*;
+import com.marcode.ebanking.exceptions.BalanceNotSufficientException;
 import com.marcode.ebanking.exceptions.BankAccountNotFoundException;
 import com.marcode.ebanking.exceptions.CustomerNotFoundException;
 import com.marcode.ebanking.services.BankAccountService;
@@ -13,7 +14,8 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @Slf4j
-@RequestMapping("api/v1/accounts")
+@RequestMapping("/ebanking/api/v1/accounts")
+@CrossOrigin()
 public class BankAccountRestController {
     private BankAccountService bankAccountService;
 
@@ -59,5 +61,28 @@ public class BankAccountRestController {
             @RequestParam(name="page",defaultValue = "0" ) int page,
             @RequestParam(name="size",defaultValue = "1" ) int size) throws BankAccountNotFoundException {
         return bankAccountService.getAccountHistory(accountId, page, size);
+    }
+
+    @PostMapping("/debit")
+    public DebitDTO debit(@RequestBody DebitDTO debitDTO) throws BankAccountNotFoundException, BalanceNotSufficientException {
+        this.bankAccountService.debit(debitDTO.getAccountId(), debitDTO.getAmount(), debitDTO.getDescription());
+        return debitDTO;
+    }
+
+    @PostMapping("/credit")
+    public CreditDTO debit(@RequestBody CreditDTO creditDTO) throws BankAccountNotFoundException, BalanceNotSufficientException {
+        this.bankAccountService.credit(creditDTO.getAccountId(), creditDTO.getAmount(), creditDTO.getDescription());
+        return creditDTO;
+    }
+
+    @PostMapping("/transfer")
+    public TransferRequestDTO debit(@RequestBody TransferRequestDTO transferRequestDTO) throws BankAccountNotFoundException, BalanceNotSufficientException {
+        
+        this.bankAccountService.transfer(
+                transferRequestDTO.getAccountSource(),
+                transferRequestDTO.getAccountDestination(),
+                transferRequestDTO.getAmount()
+        );
+        return transferRequestDTO;
     }
 }

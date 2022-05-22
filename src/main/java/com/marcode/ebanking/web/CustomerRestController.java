@@ -15,7 +15,8 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @Slf4j
-@RequestMapping("api/v1/customers")
+@RequestMapping("/ebanking/api/v1/customers")
+@CrossOrigin()
 public class CustomerRestController {
 
     private final CustomerService customerService;
@@ -23,6 +24,11 @@ public class CustomerRestController {
     @GetMapping()
     public List<CustomerDTO> getCustomers(){
         return customerService.listCustomer();
+    }
+
+    @GetMapping("/search")
+    public List<CustomerDTO> searchCustomers(@RequestParam(name= "keyword", defaultValue = "")String keyword){
+        return customerService.searchCustomer("%" + keyword + "%");
     }
 
     @GetMapping("/{id}")

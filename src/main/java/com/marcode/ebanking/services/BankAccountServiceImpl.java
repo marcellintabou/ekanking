@@ -157,7 +157,7 @@ public class BankAccountServiceImpl implements BankAccountService{
         BankAccount bankAccount = findBankAccount(accountId);
 
         Page<AccountOperation> accountOperations =
-                accountOperationRepository.findByBankAccountId(accountId, PageRequest.of(page, size));
+                accountOperationRepository.findByBankAccountIdOrderByOperationDateDesc(accountId, PageRequest.of(page, size));
         List<AccountOperationDTO> accountHistoryDTOS = accountOperations
                 .getContent()
                 .stream()
